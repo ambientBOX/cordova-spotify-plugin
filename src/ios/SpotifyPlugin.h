@@ -47,4 +47,6 @@ NSDate *stringToDate(NSString *dateString);
 - (void)getTrackListSize:(CDVInvokedUrlCommand*)command;
 - (void)getTrackMetadata:(CDVInvokedUrlCommand*)command;
 - (void)getCurrentPlaybackPosition:(CDVInvokedUrlCommand*)command;
+
+@property CDVInvokedUrlCommand *audioPlayerEventCallBack;
 @end

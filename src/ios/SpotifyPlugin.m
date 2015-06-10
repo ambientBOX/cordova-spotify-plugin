@@ -199,6 +199,8 @@ NSDate *stringToDate(NSString *dateString)
         [self getAudioPlayerByID: [command.arguments objectAtIndex:0] callbackId:command.callbackId callback:^(NSError *error, SpotifyAudioPlayer *player) {
             if (error) return;
 
+            self.audioPlayerEventCallBack = command;
+
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventNotificationFromAudioPlayer:) name:@"event" object:player];
         }];
     }];
@@ -737,15 +739,15 @@ NSDate *stringToDate(NSString *dateString)
 
 #pragma mark Notification handlers
 
-- (void) eventNotificationFromAudioPlayer:(NSNotification *)note
+- (void)eventNotificationFromAudioPlayer:(NSNotification *)note
 {
-    SpotifyAudioPlayer *player = note.object;
+    //SpotifyAudioPlayer *player = note.object;
 
     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:note.userInfo];
 
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:player.instanceID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.audioPlayerEventCallBack.callbackId];
 }
 
 #pragma mark Convenience methods
